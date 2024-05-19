@@ -2,13 +2,13 @@ import RestaurantCard from "./RestaurentCard"
 import Shimmer from "./Shimmer"
 import resDataList from "../utils/mockData"
 import { useState, useEffect } from "react"
-
+import { Link } from "react-router-dom"
 
 const Body = () => {
 
     // local state variable in react
     // pass default value in argument , for eg []
-    const [listOfRestaurant, setListOfRestaurant] = useState([])
+    const [listOfRestaurant, setListOfRestaurant] = useState([resDataList])
     console.log("listOfRestaurant ", listOfRestaurant);
 
     const [filteredListOfRestaurant, setFilteredListOfRestaurant] = useState([])
@@ -16,11 +16,11 @@ const Body = () => {
 
     const [searchText, setSearchText] = useState("");
     useEffect(() => {
-        fetchDataFromAPI();
+        // fetchDataFromAPI();
     }, [])
 
     const fetchDataFromAPI = async () => {
-        const url = "https://www.swiggy.com/dapi/restaurants/list/v5?lat=28.6126255&lng=77.04108959999999&page_type=DESKTOP_WEB_LISTING"
+        const url = "https://corsproxy.io/?https://www.swiggy.com/dapi/restaurants/list/v5?lat=28.6126255&lng=77.04108959999999&page_type=DESKTOP_WEB_LISTING"
         const options = {
             method: 'GET',
             headers: {
@@ -57,7 +57,11 @@ const Body = () => {
                 }}>Top Rated Restaurants</button>
             </div>
             <div className="rest-container">
-                {filteredListOfRestaurant.map(restaurant => <RestaurantCard key={restaurant.info?.id} resData={restaurant} />)}
+                {filteredListOfRestaurant.map(restaurant =>
+                    <Link to={"/restaurants/" + restaurant.info?.id} key={restaurant.info?.id}>
+                        <RestaurantCard resData={restaurant} />
+                    </Link>
+                )}
             </div>
         </div>
     )
